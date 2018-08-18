@@ -1,0 +1,27 @@
+{
+  "name": "@reallifedigital/nuxt-image-loader-module",
+  "version": "1.0.0",
+  "description": "An image loader module for nuxt.js that allows you to configure image style derivatives.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reallifedigital/nuxt-image-loader-module.git"
+  },
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "image-processing",
+    "images",
+    "graphicsmagick",
+    "module"
+  ],
+  "author": "Barry Fisher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reallifedigital/nuxt-image-loader-module/issues"
+  },
+  "homepage": "https://github.com/reallifedigital/nuxt-image-loader-module#readme"
+}

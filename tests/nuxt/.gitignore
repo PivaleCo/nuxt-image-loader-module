@@ -1,0 +1,31 @@
+# dependencies
+node_modules
+
+# logs
+*.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+# Intellij idea
+.idea
+*iml
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Generated files
+static/manifest*.json
+static/sw.js
+static/workbox-sw*.js
+
+# Test generated files
+package-json.lock
+static/image-styles

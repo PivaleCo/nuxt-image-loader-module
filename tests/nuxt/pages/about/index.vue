@@ -1,8 +1,8 @@
 <template>
   <section class="container">
-    <h1>Hello</h1>
+    <h1>Hello from about</h1>
 
-    <nuxt-link to="/about">Go to about page</nuxt-link>
+    <nuxt-link to="/">Go to home page</nuxt-link>
 
     <h2>Original cat</h2>
     <p><img src="/cat.jpg" alt="Original cat" /></p>

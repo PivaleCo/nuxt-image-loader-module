@@ -177,7 +177,26 @@ const imageLoaderFactory = (options) => function (req, res, next) {
 }
 
 module.exports = function imageLoader (moduleOptions) {
+  const path = require('path')
   const imageLoaderHandler = imageLoaderFactory(moduleOptions)
+
+  const buildType = process.env.npm_lifecycle_event
+
   this.addServerMiddleware({ path: '', handler: imageLoaderHandler })
+  this.addPlugin({
+    src: path.resolve(__dirname, 'plugin.template.js'),
+    options: {
+      imagesBaseDir: moduleOptions.imagesBaseDir,
+      buildType
+    }
+  })
+
+  if (buildType === 'generate') {
+    process.$imageLoaderRegistry = []
+    this.nuxt.hook('generate:done', function(generator) {
+      console.log(process.$imageLoaderRegistry)
+    })
+  }
+
 }
 

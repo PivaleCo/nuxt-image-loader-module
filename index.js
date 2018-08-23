@@ -123,6 +123,10 @@ const imageLoaderFactory = (options) => function (req, res, next) {
 
     const imageStyles = options.imageStyles || {}
 
+    if (query.style && !Object.keys(imageStyles).includes(query.style)) {
+      console.error(`${query.style} is not a valid image style for ${req.url}`)
+    }
+
     if (query.style && Object.keys(imageStyles).includes(query.style)) {
 
       const mkdirp = require('mkdirp')
@@ -176,9 +180,95 @@ const imageLoaderFactory = (options) => function (req, res, next) {
   next()
 }
 
+/**
+ * Get query object from a path.
+ */
+const getQueryParams = function (src) {
+  const queryString = src.split('?')[1] || ''
+  return queryString.split('&').reduce((acc, param) => {
+    const [key, value] = param.split('=')
+    acc[key] = value
+    return acc
+  }, {})
+}
+
+/**
+ * Process all images called from nuxt-img render registry, so that nuxt
+ * generate can include static image files.
+ *
+ * Images without styles are copied without graphicsmagick alterations.
+ */
+const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir, generateDir }) {
+  // options.imagesBaseDir allows overriding default 'content' directory.
+  imagesBaseDir = imagesBaseDir ? stripTrailingLeadingSlashes(imagesBaseDir) : 'content'
+
+  const fs = require('fs')
+  const mkdirp = require('mkdirp')
+  const gm = require('gm')
+  const path = require('path')
+
+  for (imagePath of imagePaths) {
+
+    const query = getQueryParams(imagePath)
+
+    if (query.style && !Object.keys(imageStyles).includes(query.style)) {
+      // Image style not defined.
+      continue
+    }
+
+    const derivativeSuffix = query.style ? `--${query.style}` : ''
+    const isDerivative = !!derivativeSuffix
+    const imagePathNoQuery = imagePath.split('?')[0]
+    // Lookup image file in the base images directory.
+    const filePath = `./${imagesBaseDir}${imagePathNoQuery}`
+    const requestExtension = path.extname(imagePathNoQuery)
+
+    const subDir = path.dirname(imagePathNoQuery)
+    const styleDir = path.join(generateDir, 'image-styles', subDir)
+
+    const sourceBasename = path.basename(imagePathNoQuery, requestExtension)
+    const targetFile = `${sourceBasename}${derivativeSuffix}${requestExtension}`
+    const targetPath = path.join(styleDir, targetFile)
+
+    const styleName = query.style
+    const style = imageStyles[styleName]
+
+    // Prepare target directory.
+    if (!fs.existsSync(styleDir)) {
+      mkdirp.sync(styleDir)
+    }
+
+    if (!isDerivative) {
+      // Copy only
+      fs.copyFileSync(filePath, targetPath)
+      continue
+    }
+
+    const pipeline = gm(filePath)
+
+    const errors = []
+    pipelineApplyMacros({ pipeline, style, styleName, errors })
+    pipelineApplyActions({ pipeline, style, styleName, errors })
+
+    if (errors.length > 0) {
+      errors.forEach(error => console.error(error))
+      continue
+    }
+
+    // Write processed file.
+    pipeline.write(targetPath, function (error) {
+      if (!error) {
+        console.error(error)
+      }
+    });
+  }
+}
+
 module.exports = function imageLoader (moduleOptions) {
   const path = require('path')
   const imageLoaderHandler = imageLoaderFactory(moduleOptions)
+
+  const validImageStyles = moduleOptions.imageStyles && typeof moduleOptions.imageStyles === 'object' ? Object.keys(moduleOptions.imageStyles) : []
 
   const buildType = process.env.npm_lifecycle_event
 
@@ -186,17 +276,20 @@ module.exports = function imageLoader (moduleOptions) {
   this.addPlugin({
     src: path.resolve(__dirname, 'plugin.template.js'),
     options: {
-      imagesBaseDir: moduleOptions.imagesBaseDir,
-      buildType
+      validImageStyles
     }
   })
 
   if (buildType === 'generate') {
+    const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []
     this.nuxt.hook('generate:done', function(generator) {
-      console.log(process.$imageLoaderRegistry)
+      generateStaticImages({
+        imagePaths: process.$imageLoaderRegistry,
+        imageStyles: moduleOptions.imageStyles,
+        imagesBaseDir: moduleOptions.imagesBaseDir,
+        generateDir
+      })
     })
   }
-
 }
-

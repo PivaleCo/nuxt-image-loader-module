@@ -8,6 +8,12 @@ Processing of images is done by defining 'image styles' in `nuxt.config.json`. Y
 
 Images are processed using the [GraphicsMagick for node](https://github.com/aheckmann/gm) package, so please refer the documentation there to understand the variety of image processing capabilities and options.
 
+Works for all of nuxt deployment modes:
+
+* Server Rendered - `npm run build && npm run start`
+* Statically Generated - `npm run generate`
+* Hot Module Replacement - `npm run dev`
+
 ## Installation
 
 1. __IMPORTANT:__ Install the [graphicsmagick package](http://www.graphicsmagick.org/README.html) on the same host system (or container) where your application lives.
@@ -52,21 +58,56 @@ module.exports = {
   * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues), or, even better, submit a pull request.
   * (Please note that you _can_ use macros and actions together, just bear in mind that actions are performed _after_ macros.)
 
-## "Hello world" - calling a processed image
+## Calling a processed image with query strings
+
+> Important: This method will only work with server rendering. For statically generated sites see the `nuxt-img` component method below.
 
 1. Let's assume that you have your images located in a sub-directory of your project named `content`. Place an image in that directory called, for example, `test.png`. Make it a fairly large image if you're following along. Also, ensure you've followed the above installation steps and have mirrored the same `nuxt.config.js` configuration above with at least the 'small' image style definition.
 
 2. In one of your nuxt pages (or layout, component etc.) create an img tag that references the image:
 ```
-<img src="/test.png" src="Never forget alt tags!" />
+<img src="/test.png" alt="Never forget alt tags!" />
 ```
 With your nuxt application running, you should now see your image loaded by this module, but nothing too surprising is happening just yet, except to say that the image has been loaded from the `content` directory.
 
 3. Now change the image URL to:
 ```
-<img src="/test.png?style=small" src="Never forget alt tags!" />
+<img src="/test.png?style=small" alt="Never forget alt tags!" />
 ```
 On refresh (or hot reload) you will see that the image has been automatically resized to 160px x 90px. If you see a smaller image than in step 2, then you've configured this module correctly. You'll also notice that a cached version of the processed image now lives in `<YOUR-APP-ROOT>/static/image-styles/test--small.png`. This image will be loaded on subsequent requests to `/test.png?style=small` for optimized performance.
+
+## Calling a processed image with the `<nuxt-img />` component
+
+> Using the `<nuxt-img />` component is the preferred method to load processed and original images due its clearer syntax and ability to automatically parse and generate relative URL paths which are required for `nuxt generate` to work correctly.
+
+When you have this module included and loaded via your nuxt.config.js file (instructions above) you will have access to a global `<nuxt-img />` component. This works very similarly to a regular `<img>` tag, except that you can supply an optional `image-style` attribute which should match once of your pre-defined image styles.
+
+```
+<nuxt-img src="/test.png" image-style="small" alt="Never forget alt tags!" />
+```
+
+> Bear in mind that the root src path you supply becomes relative to your `imagesBaseDir` which defaults to a directory named 'content' in the root of your application.
+
+You can bind the `src` and `image-style` with dynamic data properties from your nuxt page, layout or component. For example in a Vue single file component:
+
+```
+<template>
+  <div>
+    <nuxt-img :src="testImage" :image-style="currentStyle" alt="Never forget alt tags!" />
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      testImage: '/test.png',
+      currentStyle: 'small'
+    }
+  }
+}
+</script>
+```
 
 ### Further advice and points of note:
 

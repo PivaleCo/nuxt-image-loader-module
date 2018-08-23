@@ -20,7 +20,7 @@ Works for all of nuxt deployment modes:
 
 2. Install this module as a dependency in your project:
 
-```
+```shell
 npm install @reallifedigital/nuxt-image-loader-module
 ```
 
@@ -28,7 +28,7 @@ npm install @reallifedigital/nuxt-image-loader-module
 
 Your nuxt.config.js file should contain something like the following:
 
-```
+```javascript
 module.exports = {
 
   // ...
@@ -65,13 +65,13 @@ module.exports = {
 1. Let's assume that you have your images located in a sub-directory of your project named `content`. Place an image in that directory called, for example, `test.png`. Make it a fairly large image if you're following along. Also, ensure you've followed the above installation steps and have mirrored the same `nuxt.config.js` configuration above with at least the 'small' image style definition.
 
 2. In one of your nuxt pages (or layout, component etc.) create an img tag that references the image:
-```
+```html
 <img src="/test.png" alt="Never forget alt tags!" />
 ```
 With your nuxt application running, you should now see your image loaded by this module, but nothing too surprising is happening just yet, except to say that the image has been loaded from the `content` directory.
 
 3. Now change the image URL to:
-```
+```html
 <img src="/test.png?style=small" alt="Never forget alt tags!" />
 ```
 On refresh (or hot reload) you will see that the image has been automatically resized to 160px x 90px. If you see a smaller image than in step 2, then you've configured this module correctly. You'll also notice that a cached version of the processed image now lives in `<YOUR-APP-ROOT>/static/image-styles/test--small.png`. This image will be loaded on subsequent requests to `/test.png?style=small` for optimized performance.
@@ -82,7 +82,7 @@ On refresh (or hot reload) you will see that the image has been automatically re
 
 When you have this module included and loaded via your nuxt.config.js file (instructions above) you will have access to a global `<nuxt-img />` component. This works very similarly to a regular `<img>` tag, except that you can supply an optional `image-style` attribute which should match once of your pre-defined image styles.
 
-```
+```html
 <nuxt-img src="/test.png" image-style="small" alt="Never forget alt tags!" />
 ```
 
@@ -90,7 +90,7 @@ When you have this module included and loaded via your nuxt.config.js file (inst
 
 You can bind the `src` and `image-style` with dynamic data properties from your nuxt page, layout or component. For example in a Vue single file component:
 
-```
+```vue
 <template>
   <div>
     <nuxt-img :src="testImage" :image-style="currentStyle" alt="Never forget alt tags!" />
@@ -117,7 +117,7 @@ export default {
 
 3. You may wish to put the following into your `.gitignore` file so that the processed images are not committed into your version controlled files:
 
-```
+```gitignore
 # Image styles
 static/image-styles
 ```

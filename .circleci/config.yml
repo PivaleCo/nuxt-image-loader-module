@@ -39,7 +39,7 @@ jobs:
 
       - run:
           name: Build nuxt test environments for node server and static server (e2e tests)
-          command: npm run test:e2e:build && test:e2e:buildStatic
+          command: npm run test:e2e:build && npm run test:e2e:buildStatic
 
       - run:
           name: Serve nuxt test environment (server mode) (e2e tests)

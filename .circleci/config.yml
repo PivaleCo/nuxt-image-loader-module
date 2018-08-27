@@ -36,7 +36,7 @@ jobs:
 
       - run:
           name: Build and run nuxt test environment (e2e tests)
-          command: npm run test:e2e:setup -wait tcp://localhost:9000 -timeout 30s
+          command: npm run test:e2e:setup
 
       - run:
           name: Run e2e tests

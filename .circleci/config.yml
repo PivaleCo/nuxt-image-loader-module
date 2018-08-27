@@ -7,7 +7,10 @@ jobs:
   build:
     docker:
       # Main container image
-      - image: circleci/node:9-stretch
+      - image: cypress/base:8
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,9 +25,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - node-dependencies-
+            - v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v2-deps-{{ .Branch }}-
+            - v2-deps-
 
       - run:
           name: Install node dependencies for nuxt test environment (e2e tests)
@@ -43,10 +46,16 @@ jobs:
           name: Run e2e tests
           command: npm run test:e2e:run
 
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
+
       - save_cache:
+          key: v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
-            - node_modules
-          key: node-dependencies-{{ checksum "package.json" }}
+            - ~/.npm
+            - ~/.cache
 
     #   - run:
     #       name: Run tests and send coverage report to codecov

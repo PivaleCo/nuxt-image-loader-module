@@ -67,6 +67,10 @@ jobs:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
+      - store_artifacts:
+          path: tests/nuxt/static/image-styles
+      - store_artifacts:
+          path: tests/nuxt/dist/image-styles
 
       - save_cache:
           key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}

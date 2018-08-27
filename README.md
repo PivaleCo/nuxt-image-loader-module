@@ -1,5 +1,7 @@
 # Nuxt Image Loader Module
 
+[![CircleCI](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master)
+
 This module will automatically resize, rotate, blur, watermark and crop (etc...) your images based on rules you define.
 
 This module works by intercepting incoming image requests (on the server side) and will respond with either the source image or a _processed_ image if a query string is appended to the image URL.

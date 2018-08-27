@@ -1,8 +1,5 @@
-<div>
-  <p style="background-color: white; text-align: center">
-    <img src="docs/intro-graphic.jpg" alt="Nuxt Image Loader logo and example" />
-  </p>
-</div>
+
+![Nuxt Image Loader logo and example](docs/intro-graphic.jpg)
 
 [![CircleCI](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master)
 

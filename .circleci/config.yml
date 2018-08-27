@@ -27,16 +27,17 @@ jobs:
           - node-dependencies-
 
       - run:
-          name: Install node dependencies for module
-          command: npm install
-
-      - run:
           name: Install node dependencies for nuxt test environment (e2e tests)
           command: cd tests/nuxt && npm install
 
       - run:
           name: Build and run nuxt test environment (e2e tests)
           command: npm run test:e2e:setup
+          background: true
+
+      - run:
+          name: Install node dependencies for module
+          command: npm install
 
       - run:
           name: Run e2e tests

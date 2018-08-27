@@ -4,7 +4,8 @@
   "description": "An image loader module for nuxt.js that allows you to configure image style derivatives.",
   "main": "index.js",
   "scripts": {
-    "test:e2e:setup": "cd tests/nuxt && npm run build && npm run start",
+    "test:e2e:build": "cd tests/nuxt && npm run build",
+    "test:e2e:serve": "cd tests/nuxt && npm run start",
     "test:e2e:run": "cypress run --spec cypress/integration/validImages.js"
   },
   "repository": {

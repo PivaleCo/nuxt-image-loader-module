@@ -38,8 +38,12 @@ jobs:
           command: cd tests/nuxt && npm install
 
       - run:
-          name: Build and run nuxt test environment (e2e tests)
-          command: npm run test:e2e:setup
+          name: Build nuxt test environment (e2e tests)
+          command: npm run test:e2e:build
+
+      - run:
+          name: Serve nuxt test environment (e2e tests)
+          command: npm run test:e2e:serve
           background: true
 
       - run:

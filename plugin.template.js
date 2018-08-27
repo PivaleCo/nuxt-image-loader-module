@@ -33,7 +33,8 @@ const processSrcStatic = function (src, style, routerPath) {
 
   if (style !== null) {
     if (!validateImageStyle(style)) {
-      return
+      // Fallback to using original image.
+      return relativeBasePath + 'image-styles' + src.split('?')[0]
     }
 
     const splitPath = src.split('.')
@@ -53,7 +54,6 @@ const processSrcStatic = function (src, style, routerPath) {
 const processSrcNonStatic = function (src, style) {
   if (!validateImageStyle(style)) {
     return src.split('?')[0]
-    return
   }
 
   return src.split('?')[0] + '?style=' + style
@@ -122,7 +122,10 @@ Vue.component('nuxt-img', {
     }
 
     if (isStatic) {
-      addToGenerateRegistry(props)
+      if (!process.browser) {
+        // nuxt generate is running.
+        addToGenerateRegistry(props)
+      }
 
       // Prioritize style prop for src path processing.
       if (props.imageStyle) {

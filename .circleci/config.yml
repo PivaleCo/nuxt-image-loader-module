@@ -34,16 +34,21 @@ jobs:
           command: apt-get update && apt-get -y install graphicsmagick
 
       - run:
-          name: Install node dependencies for nuxt test environment (e2e tests)
+          name: Install node dependencies for nuxt test environments (e2e tests)
           command: cd tests/nuxt && npm install
 
       - run:
-          name: Build nuxt test environment (e2e tests)
-          command: npm run test:e2e:build
+          name: Build nuxt test environments for node server and static server (e2e tests)
+          command: npm run test:e2e:build && test:e2e:buildStatic
 
       - run:
-          name: Serve nuxt test environment (e2e tests)
+          name: Serve nuxt test environment (server mode) (e2e tests)
           command: npm run test:e2e:serve
+          background: true
+
+      - run:
+          name: Serve nuxt test environment (static mode) (e2e tests)
+          command: npm run test:e2e:serveStatic
           background: true
 
       - run:

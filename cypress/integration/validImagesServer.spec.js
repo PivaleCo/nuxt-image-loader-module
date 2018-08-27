@@ -1,4 +1,4 @@
-const baseUrl = Cypress.config('baseUrl')
+const baseUrl = 'http://localhost:9000'
 
 const assertWidthHeightPath = function (attr, attrValue, width, height, path) {
   cy.get(`img[${attr}="${attrValue}"]`).its('0.height').should('be.eq', height)
@@ -22,7 +22,7 @@ const checkAllImages = function () {
 
 describe('Original and processing images load', function() {
   it('Shows correct images on the index page via server based request', function() {
-    cy.visit('/')
+    cy.visit(`${baseUrl}/`)
     checkAllImages()
   })
   it('Shows correct images on the about page when navigating via client router redirection', function() {
@@ -30,7 +30,7 @@ describe('Original and processing images load', function() {
     checkAllImages()
   })
   it('Shows correct images on the about page via server based request', function() {
-    cy.visit('/about')
+    cy.visit(`${baseUrl}/about`)
     checkAllImages()
   })
 })

@@ -25,9 +25,13 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
             - v2-deps-{{ .Branch }}-
             - v2-deps-
+
+      - run:
+          name: Install graphicsmagick
+          command: sudo apt-get update && sudo apt-get install graphicsmagick
 
       - run:
           name: Install node dependencies for nuxt test environment (e2e tests)
@@ -52,7 +56,7 @@ jobs:
           path: cypress/screenshots
 
       - save_cache:
-          key: v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v2-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/.npm
             - ~/.cache

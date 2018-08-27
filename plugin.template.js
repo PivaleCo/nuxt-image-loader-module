@@ -122,7 +122,7 @@ Vue.component('nuxt-img', {
     }
 
     if (isStatic) {
-      if (typeof window === 'undefined') {
+      if (typeof process.$imageLoaderRegistry !== 'undefined') {
         // nuxt generate is running.
         addToGenerateRegistry(props)
       }

@@ -31,7 +31,7 @@ jobs:
 
       - run:
           name: Install graphicsmagick
-          command: sudo apt-get update && sudo apt-get install graphicsmagick
+          command: apt-get update && apt-get install graphicsmagick
 
       - run:
           name: Install node dependencies for nuxt test environment (e2e tests)

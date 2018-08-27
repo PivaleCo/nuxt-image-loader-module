@@ -20,19 +20,17 @@ const checkAllImages = function () {
   assertWidthHeightPath('alt', 'Original eagle with invalid image style', 900, 549, '/nested/deeply/eagle.jpg')
 }
 
-
-describe('My First Test', function() {
-  it('Original and processing images load on index page', function() {
+describe('Original and processing images load', function() {
+  it('Shows correct images on the index page via server based request', function() {
     cy.visit('/')
     checkAllImages()
-
-    // Client side router change to about page.
+  })
+  it('Shows correct images on the about page when navigating via client router redirection', function() {
     cy.get('a[href="/about"]').click()
     checkAllImages()
-
-    // Server side router change to about page.
+  })
+  it('Shows correct images on the about page via server based request', function() {
     cy.visit('/about')
     checkAllImages()
   })
-
 })

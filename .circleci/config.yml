@@ -60,10 +60,6 @@ jobs:
           command: sleep 10
 
       - run:
-          name: Install node dependencies for module
-          command: npm install
-
-      - run:
           name: Run e2e tests
           command: npm run test:e2e:run
 

@@ -34,6 +34,10 @@ jobs:
           command: apt-get update && apt-get -y install graphicsmagick
 
       - run:
+          name: Install node dependencies for module
+          command: npm install
+
+      - run:
           name: Install node dependencies for nuxt test environments (e2e tests)
           command: cd tests/nuxt && npm install
 
@@ -50,6 +54,10 @@ jobs:
           name: Serve nuxt test environment (static mode) (e2e tests)
           command: npm run test:e2e:serveStatic
           background: true
+
+      - run:
+          name: Allow time for node server and static server to start up
+          command: sleep 10
 
       - run:
           name: Install node dependencies for module

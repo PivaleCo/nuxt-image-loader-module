@@ -52,6 +52,7 @@ const processSrcStatic = function (src, style, routerPath) {
  */
 const processSrcNonStatic = function (src, style) {
   if (!validateImageStyle(style)) {
+    return src.split('?')[0]
     return
   }
 

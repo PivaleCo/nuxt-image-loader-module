@@ -1,0 +1,52 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # Main container image
+      - image: circleci/node:9-stretch
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.6.3-jessie-ram
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - node-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - node-dependencies-
+
+      - run:
+          name: Install node dependencies for module
+          command: npm install
+
+      - run:
+          name: Install node dependencies for nuxt test environment (e2e tests)
+          command: cd tests/nuxt && npm install
+
+      - run:
+          name: Build and run nuxt test environment (e2e tests)
+          command: npm run test:e2e:setup -wait tcp://localhost:9000 -timeout 30s
+
+      - run:
+          name: Run e2e tests
+          command: npm run test:e2e:run
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: node-dependencies-{{ checksum "package.json" }}
+
+    #   - run:
+    #       name: Run tests and send coverage report to codecov
+    #       command: npm run codecov-report

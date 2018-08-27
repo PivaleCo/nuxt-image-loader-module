@@ -7,6 +7,12 @@
   "dependencies": {
     "nuxt": "latest"
   },
+  "config": {
+    "nuxt": {
+      "host": "127.0.0.1",
+      "port": "9000"
+    }
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",

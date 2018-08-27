@@ -1,6 +1,10 @@
-# Nuxt Image Loader Module
+<p style="text-align:center">
+  <img src="docs/intro-graphic.jpg" alt="Nuxt Image Loader logo and example" />
+</p>
 
 [![CircleCI](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master)
+
+# Nuxt Image Loader Module
 
 This module will automatically resize, rotate, blur, watermark and crop (etc...) your images based on rules you define.
 

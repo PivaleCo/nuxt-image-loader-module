@@ -41,27 +41,41 @@ jobs:
           name: Install node dependencies for nuxt test environments (e2e tests)
           command: cd tests/nuxt && npm install
 
+      # Node server tests.
       - run:
-          name: Build nuxt test environments for node server and static server (e2e tests)
-          command: npm run test:e2e:build && npm run test:e2e:buildStatic
+          name: Build nuxt test environments for node server (e2e tests)
+          command: npm run test:e2e:build
 
       - run:
-          name: Serve nuxt test environment (server mode) (e2e tests)
+          name: Serve nuxt test environment for node server (e2e tests)
           command: npm run test:e2e:serve
           background: true
 
       - run:
-          name: Serve nuxt test environment (static mode) (e2e tests)
+          name: Allow time for node server to start up
+          command: sleep 10
+
+      - run:
+          name: Run e2e node server tests
+          command: npm run test:e2e:run --spec cypress/integration/validImagesServer.spec.js
+
+      # Static server tests.
+      - run:
+          name: Build nuxt test environment for static server (e2e tests)
+          command: npm run test:e2e:buildStatic
+
+      - run:
+          name: Serve nuxt test environment for static server (e2e tests)
           command: npm run test:e2e:serveStatic
           background: true
 
       - run:
-          name: Allow time for node server and static server to start up
-          command: sleep 10
+          name: Allow time for static server to start up
+          command: sleep 5
 
       - run:
-          name: Run e2e tests
-          command: npm run test:e2e:run
+          name: Run e2e static server tests
+          command: npm run test:e2e:run --spec cypress/integration/validImagesStatic.spec.js
 
       - store_artifacts:
           path: cypress/videos

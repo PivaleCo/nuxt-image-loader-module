@@ -99,12 +99,7 @@ Vue.component('nuxt-img', {
       type: String,
       required: true,
     },
-    'image-style': {type: String},
-    alt: {type: String},
-    srcset: {type: String},
-    id: {type: String},
-    class: {type: String},
-    style: {type: String},
+    'image-style': {type: String}
   },
   render (createElement, context) {
     const props = context.props
@@ -116,8 +111,13 @@ Vue.component('nuxt-img', {
     const createdElement = () => {
       return createElement('img', {
         attrs: {
-          ...props
-        }
+          ...props,
+          ...context.data.attrs
+        },
+        staticClass: context.data.staticClass,
+        staticStyle: context.data.staticStyle,
+        class: context.data.class,
+        style: context.data.style
       })
     }
 

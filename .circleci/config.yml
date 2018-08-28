@@ -75,7 +75,7 @@ jobs:
 
       - run:
           name: Run e2e static server tests
-          command: npm run test:e2e:run --spec cypress/integration/validImagesStatic.spec.js
+          command: npm run test:e2e:run --spec cypress/integration/validImagesGenerate.spec.js
 
       - store_artifacts:
           path: cypress/videos

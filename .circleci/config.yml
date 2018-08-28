@@ -48,16 +48,16 @@ jobs:
 
       - run:
           name: Serve nuxt test environment for node server (e2e tests)
-          command: npm run test:e2e:serve
+          command: npm run test:e2e:start
           background: true
 
       - run:
           name: Allow time for node server to start up
-          command: sleep 10
+          command: sleep 5
 
       - run:
           name: Run e2e node server tests
-          command: npm run test:e2e:run --spec cypress/integration/validImagesServer.spec.js
+          command: npm run test:e2e:runServer
 
       # Static server tests.
       - run:
@@ -75,7 +75,7 @@ jobs:
 
       - run:
           name: Run e2e static server tests
-          command: npm run test:e2e:run --spec cypress/integration/validImagesGenerate.spec.js
+          command: npm run test:e2e:runStatic
 
       - store_artifacts:
           path: cypress/videos

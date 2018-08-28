@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test:e2e:build": "cd tests/nuxt && npm run build",
-    "test:e2e:serve": "cd tests/nuxt && npm run start",
+    "test:e2e:start": "cd tests/nuxt && npm run start",
     "test:e2e:buildStatic": "cd tests/nuxt && npm run generate",
     "test:e2e:serveStatic": "http-server tests/nuxt/dist -a 127.0.0.1 -p 9001",
-    "test:e2e:run": "cypress run"
+    "test:e2e:runServer": "cypress run --spec cypress/integration/validImagesServer.spec.js",
+    "test:e2e:runStatic": "cypress run --spec cypress/integration/validImagesStatic.spec.js"
   },
   "repository": {
     "type": "git",

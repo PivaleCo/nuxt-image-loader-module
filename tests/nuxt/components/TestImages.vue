@@ -1,5 +1,8 @@
 <template>
   <div>
+
+    <nuxt-img src="https://www.reallifedigital.com/sites/default/files/fields/articles/images/dclon2017.jpg" image-style="medium" alt="Remote image" />
+
     <!-- Landscape image -->
     <h2>Original cat</h2>
     <p><nuxt-img src="/cat.jpg" alt="Original cat" class="test-static-class" data-thing="test-data-thing-static" style="text-align:center" /></p>

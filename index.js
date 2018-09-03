@@ -280,6 +280,8 @@ module.exports = function imageLoader (moduleOptions) {
     }
   })
 
+  process.$imageLoaderExternalsRegistry = []
+
   if (buildType === 'generate') {
     const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []

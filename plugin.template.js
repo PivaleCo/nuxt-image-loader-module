@@ -56,6 +56,11 @@ const processSrcNonStatic = function (src, style) {
     return src.split('?')[0]
   }
 
+  if (isExternal(src)) {
+    console.log(new URL(src))
+  }
+
+
   return src.split('?')[0] + '?style=' + style
 }
 
@@ -69,6 +74,14 @@ const getQueryParams = function (src) {
     acc[key] = value
     return acc
   }, {})
+}
+
+/**
+ * Test for whether a path string is external.
+ */
+const isExternal = function (path) {
+  const externalProtocols = ['http://', 'https://']
+  return !!externalProtocols.find(protocol => path.indexOf(protocol) === 0)
 }
 
 /**

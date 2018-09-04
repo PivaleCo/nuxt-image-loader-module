@@ -267,7 +267,7 @@ const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir,
  * For images that are lazy loaded it's not possible to know ahead of time
  * during `nuxt generate` which images should be processed statically.
  */
-const addForceGeneratedImages =  function (moduleOptions) {
+const addForceGeneratedImages = function (moduleOptions) {
   const forceGenerateConfig = moduleOptions.forceGenerateImages
   const baseDir = moduleOptions.imagesBaseDir
 
@@ -328,7 +328,7 @@ module.exports = function imageLoader (moduleOptions) {
     const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []
     this.nuxt.hook('generate:done', async function(generator) {
-      addForceGeneratedImages(moduleOptions)
+      await addForceGeneratedImages(moduleOptions)
 
       generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,

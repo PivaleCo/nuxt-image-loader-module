@@ -25,7 +25,7 @@ const checkAllImages = function () {
   // <nuxt-img> component when *not* bound to data attributes.
   cy.get(`img[alt="Original cat"]`).then(img => {
     cy.wrap(img).its('0.classList').should('has', 'test-static-class')
-    cy.wrap(img).its('0.alt').should('be', 'Original cat')
+    cy.wrap(img).its('0.alt').should('be.eq', 'Original cat')
     cy.wrap(img).its('0.attributes.data-thing.value').should('be.eq', 'test-data-thing-static')
     cy.wrap(img).its('0.attributes.style.value').should('be.eq', 'text-align:center')
   })
@@ -34,7 +34,7 @@ const checkAllImages = function () {
   // <nuxt-img> component when bound to data attributes.
   cy.get(`img[alt="Small cat"]`).then(img => {
     cy.wrap(img).its('0.classList').should('has', 'test-bound-class')
-    cy.wrap(img).its('0.alt').should('be', 'Small cat')
+    cy.wrap(img).its('0.alt').should('be.eq', 'Small cat')
     cy.wrap(img).its('0.attributes.data-thing.value').should('be.eq', 'test-data-thing-bound')
     cy.wrap(img).its('0.attributes.style.value').should('be.eq', 'text-align:center')
   })

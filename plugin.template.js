@@ -77,6 +77,11 @@ const getQueryParams = function (src) {
  */
 const addToGenerateRegistry = function (props) {
   let src = props.src
+
+  if (!src) {
+    return
+  }
+
   const imageLoaderRegistry = process.$imageLoaderRegistry
 
   if (props.imageStyle) {

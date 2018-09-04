@@ -2,9 +2,9 @@ const baseUrl = 'http://localhost:9001'
 
 const assertWidthHeightPath = function (attr, attrValue, width, height, path) {
   cy.get(`img[${attr}="${attrValue}"]`).then(img => {
-    cy.wrap(img).its('0.height').should('be', height)
-    cy.wrap(img).its('0.width').should('be', width)
-    cy.wrap(img).its('0.src').should('be', path)
+    cy.wrap(img).its('0.height').should('be.eq', height)
+    cy.wrap(img).its('0.width').should('be.eq', width)
+    cy.wrap(img).its('0.src').should('be.eq', path)
   })
 }
 
@@ -26,8 +26,8 @@ const checkAllImages = function () {
   cy.get(`img[alt="Original cat"]`).then(img => {
     cy.wrap(img).its('0.classList').should('has', 'test-static-class')
     cy.wrap(img).its('0.alt').should('be', 'Original cat')
-    cy.wrap(img).its('0.attributes.data-thing.value').should('be', 'test-data-thing-static')
-    cy.wrap(img).its('0.attributes.style.value').should('be', 'text-align:center;')
+    cy.wrap(img).its('0.attributes.data-thing.value').should('be.eq', 'test-data-thing-static')
+    cy.wrap(img).its('0.attributes.style.value').should('be.eq', 'text-align:center')
   })
 
   // Check arbitrary and standard attributes pass through unaltered by the
@@ -35,8 +35,8 @@ const checkAllImages = function () {
   cy.get(`img[alt="Small cat"]`).then(img => {
     cy.wrap(img).its('0.classList').should('has', 'test-bound-class')
     cy.wrap(img).its('0.alt').should('be', 'Small cat')
-    cy.wrap(img).its('0.attributes.data-thing.value').should('be', 'test-data-thing-bound')
-    cy.wrap(img).its('0.attributes.style.value').should('be', 'text-align:center;')
+    cy.wrap(img).its('0.attributes.data-thing.value').should('be.eq', 'test-data-thing-bound')
+    cy.wrap(img).its('0.attributes.style.value').should('be.eq', 'text-align:center')
   })
 }
 
@@ -52,5 +52,13 @@ describe('Original and processing images load', function() {
   it('Shows correct images on the about page via server based request', function() {
     cy.visit(`${baseUrl}/about`)
     checkAllImages()
+  })
+})
+
+describe('Late loaded images can be force generated in nuxt module config', function() {
+  it('Loads apples image after dynamically loading it 1 second after page loads', function() {
+    cy.visit(`${baseUrl}/late-loaded`)
+    const imageStylesPath = baseUrl + '/image-styles/'
+    assertWidthHeightPath('alt', `How do you like those apples`, 320, 180, `${imageStylesPath}apples--medium.jpg`)
   })
 })

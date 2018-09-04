@@ -85,9 +85,6 @@ const fileTypeMetadata = function() {
     '.jpe': { mime: 'image/jpeg' },
     '.jpeg': { mime: 'image/jpeg' },
     '.gif': { mime: 'image/gif' },
-    '.webp': { mime: 'image/webp' },
-    '.svg': { mime: 'image/svg+xml' },
-    '.svgz': { mime: 'image/svg+xml' }
   }
 }
 
@@ -264,6 +261,53 @@ const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir,
   }
 }
 
+/**
+ * Find and register any images that should be forced rendered.
+ *
+ * For images that are lazy loaded it's not possible to know ahead of time
+ * during `nuxt generate` which images should be processed statically.
+ */
+const addForceGeneratedImages =  function (moduleOptions) {
+  const forceGenerateConfig = moduleOptions.forceGenerateImages
+  const baseDir = moduleOptions.imagesBaseDir
+
+  if (typeof forceGenerateConfig === 'object') {
+
+    const glob = require('glob')
+    const path = require('path')
+
+    Object.keys(forceGenerateConfig).forEach(style => {
+      if (!moduleOptions.imageStyles[style]) {
+        // forceGenerateImages key doesn't match an imageStyles key.
+        console.error(`forceGenerateImages key ${style} doesn't match an imageStyles key`)
+        return
+      }
+
+      const globPattern = forceGenerateConfig[style]
+
+      const imageFileTypes = Object.keys(fileTypeMetadata())
+
+      // List all images matching the specified glob pattern inside the base
+      // directory. Filter any non-image types after glob pattern is applied.
+      const images = glob.sync(`./${baseDir}/${globPattern}`, {
+        nodir: true
+      }).filter(f => imageFileTypes.includes(path.extname(f).toLowerCase()))
+
+      if (images.length === 0) {
+        console.error(`No images were found in ${baseDir} using the glob pattern ${globPattern}`)
+        return
+      }
+
+      // Transform all image paths to be compatible with query format expected
+      // by generateStaticImages()
+      images
+        .map(x => x.replace(`./${baseDir}`, '')) // Remove base directory
+        .map(x => x + `?style=${style}`) // Append style query
+        .forEach(x => process.$imageLoaderRegistry.push(x)) // Add to global registry
+    })
+  }
+}
+
 module.exports = function imageLoader (moduleOptions) {
   const path = require('path')
   const imageLoaderHandler = imageLoaderFactory(moduleOptions)
@@ -283,7 +327,9 @@ module.exports = function imageLoader (moduleOptions) {
   if (buildType === 'generate') {
     const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []
-    this.nuxt.hook('generate:done', function(generator) {
+    this.nuxt.hook('generate:done', async function(generator) {
+      addForceGeneratedImages(moduleOptions)
+
       generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,
         imageStyles: moduleOptions.imageStyles,

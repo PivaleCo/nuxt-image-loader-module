@@ -114,6 +114,46 @@ export default {
 </script>
 ```
 
+## Do you need to lazy load images when running nuxt generate?
+
+* Are you wrapping the `<nuxt-img>` component in a loop that loads asynchronously?
+* Are you loading images paths from a vuex store?
+
+If you need to bind a value to the `src` prop of the `<nuxt-img>` component that is _not_ available immediately when the page is rendered, **and** you want to run nuxt in generate mode, then you'll need to configure the `forceGenerateImages` option in your `nuxt.config.js` file so that images can be eagerly loaded at generation time.
+
+```javascript
+module.exports = {
+
+  // ...
+
+  modules: [
+    ['@reallifedigital/nuxt-image-loader-module', {
+      imagesBaseDir: 'content',
+      imageStyles: {
+        medium: { macros: ['scaleAndCrop|320|180'] },
+      },
+      forceGenerateImages: {
+        // imageStyle: globPattern
+        medium: '**/*'
+      }
+    }]
+  ],
+
+  // ...
+
+}
+```
+
+The `forceGenerateImages` configuration setting is an object where the key should the image style you want to force generate and the value is a glob pattern from inside your `imagesBaseDir`.
+
+The example glob pattern above (`**/*`) is a catch-all and will find all images in your `imagesBaseDir`.
+
+If you have many images, you may not want to force generate an image style derivative for every one. You may want to refine the catch all pattern from `**/*` to something which better targets where you are lazy-loading images. For example a sub directory with jpegs only: `gallery-images/**/*.{jpg,jpeg}`
+
+Please refer to the full list of [glob syntax options](https://github.com/isaacs/node-glob#glob-primer).
+
+> The `forceGenerateImages` option is _not_ required for when running nuxt in **server** mode because lazy-loaded images send a request to the server which is intercepted by this module's serverMiddleware for on-the-fly image generation or loading an already processed image from disk.
+
 ### Further advice and points of note:
 
 1. Your source images should be the largest and unaltered versions you have available - or at least the maximum size you expect to use in your application.

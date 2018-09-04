@@ -22,6 +22,9 @@ module.exports = {
         medium: { macros: ['scaleAndCrop|320|180'] },
         large: { macros: ['scaleAndCrop|640|360'] },
       },
+      forceGenerateImages: {
+        medium: '**/*'
+      }
     }]
   ]
 }

@@ -178,10 +178,10 @@ I'd love to hear how you're using this nuxt module and whether anything is missi
 
 Development is sponsored by [Real Life Digital](https://www.reallifedigital.com)
 
-<img src="https://www.reallifedigital.com/themes/custom/reallifetheme/logo.svg" alt="Real Life Digital Logo" width="50px" height="50px">
+<img src="https://www.reallifedigital.com/themes/custom/reallifetheme/logo.svg" alt="Real Life Digital Logo" width="100px" height="100px">
 
-Do contact us if you require Vue or Nuxt development. We also build solutions with Drupal.
+Do [contact us](https://www.reallifedigital.com/contact) if you require Vue or Nuxt development. We also build solutions with Drupal.
 
 #### Mentions
 
-* Thanks to @dev7ch for feedback and real world testing of this module.
+* Thanks to Silvan [@dev7ch](https://github.com/dev7ch) for feedback and real world testing of this module.

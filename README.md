@@ -1,5 +1,5 @@
 
-![Nuxt Image Loader logo and example](docs/intro-graphic.jpg)
+![Nuxt Image Loader logo and example](https://github.com/reallifedigital/nuxt-image-loader-module/raw/master/docs/intro-graphic.jpg)
 
 [![CircleCI](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master)
 
@@ -62,6 +62,7 @@ module.exports = {
   * `actions` - An array of image actions to perform. For example, referring to the [Graphicsmagick documentation](http://aheckmann.github.io/gm/docs.html) you'll find several actions which can be performed. You notice for the example `nuxt.config.js` example above that each action is defined with the processing method name first followed by a (`|`) pipe separator. If the processing method has arguments (such as height and width) then these are appended to the action delimited by further pipe separators.
   * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues), or, even better, submit a pull request.
   * (Please note that you _can_ use macros and actions together, just bear in mind that actions are performed _after_ macros.)
+* `forceGenerateImages` - This is an object to force process image style derivatives in generate mode. See details further down in this readme.
 
 ## Calling a processed image with query strings
 
@@ -172,3 +173,15 @@ static/image-styles
 ### Contribution
 
 I'd love to hear how you're using this nuxt module and whether anything is missing that would benefit from enhancements. If so, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues) on Github.
+
+### Credits
+
+Development is sponsored by [Real Life Digital](https://www.reallifedigital.com)
+
+<img src="https://www.reallifedigital.com/themes/custom/reallifetheme/logo.svg" alt="Real Life Digital Logo" width="50px" height="50px">
+
+Do contact us if you require Vue or Nuxt development. We also build solutions with Drupal.
+
+#### Mentions
+
+* Thanks to @dev7ch for feedback and real world testing of this module.

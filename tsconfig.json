@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist",
+        "rootDir": "src"
+    },
+    "compileOnSave": true,
+    "include": [
+        "./src/**/*.ts",
+        "./types/**/*.d.ts",
+        "./node_modules/@types"
+    ],
+    "typeRoots": [
+        "./node_modules/@types"
+    ]
+}

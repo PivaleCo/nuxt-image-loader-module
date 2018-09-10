@@ -4,8 +4,8 @@
   "description": "An image loader module for nuxt.js that allows you to configure image style derivatives.",
   "main": "index.js",
   "files": [
-    "macros.js",
-    "plugin.template.js"
+    "dist/macros.js",
+    "src/plugin.template.js"
   ],
   "scripts": {
     "test:e2e:build": "cd tests/nuxt && npm run build",
@@ -39,6 +39,11 @@
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
+    "@types/glob": "^5.0.35",
+    "@types/gm": "^1.18.0",
+    "@types/jquery": "^3.3.6",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^10.9.4",
     "cypress": "^3.1.0",
     "http-server": "^0.11.1"
   }

@@ -52,7 +52,7 @@ describe('Original and processing images load', function() {
     cy.visit(`${baseUrl}/about`)
     checkAllImages()
   })
-  it.only('Should contain images with Cache-Control headers', function() {
+  it('Should contain images with Cache-Control headers', function() {
     const imageUrls = [
       `${baseUrl}/cat.jpg`,
       `${baseUrl}/cat.jpg?style=small`,

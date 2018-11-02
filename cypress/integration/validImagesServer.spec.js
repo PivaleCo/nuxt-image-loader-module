@@ -52,4 +52,22 @@ describe('Original and processing images load', function() {
     cy.visit(`${baseUrl}/about`)
     checkAllImages()
   })
+  it.only('Should contain images with Cache-Control headers', function() {
+    const imageUrls = [
+      `${baseUrl}/cat.jpg`,
+      `${baseUrl}/cat.jpg?style=small`,
+      `${baseUrl}/cat.jpg?style=medium`,
+      `${baseUrl}/cat.jpg?style=large`,
+    ]
+    const requests = imageUrls.map(url => cy.request(url))
+
+    Promise.all(requests)
+      .then(responses => {
+        responses.forEach(response => {
+          expect(response.status).to.eq(200)
+          expect(response.headers).to.have.property('cache-control')
+          expect(response.headers['cache-control']).to.eq('max-age=86400')
+        })
+      })
+  })
 })

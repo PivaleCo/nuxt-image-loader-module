@@ -80,7 +80,11 @@ const respondWithError = (res: ServerResponse, error: Error): void => {
 
 const respondWithFile = (res: ServerResponse, imagePath: string, mimeType: string): void => {
   const fileContent = fs.readFileSync(imagePath)
-  res.writeHead(200, { 'Content-Type': mimeType });
+  res.writeHead(200, {
+    'Content-Type': mimeType,
+    // 1 day (60 seconds * 60 minutes * 24 hours)
+    'Cache-Control': 'max-age=86400'
+  });
   res.end(fileContent)
 }
 

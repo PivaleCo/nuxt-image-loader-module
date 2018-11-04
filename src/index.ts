@@ -331,7 +331,7 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
   const validImageStyles = moduleOptions.imageStyles && typeof moduleOptions.imageStyles === 'object' ? Object.keys(moduleOptions.imageStyles) : []
 
   const buildType = process.env.npm_lifecycle_event
-
+  console.log('*** npm_lifecycle_event', process.env.npm_lifecycle_event)
   this.addServerMiddleware({ path: '', handler: imageLoaderHandler })
   this.addPlugin({
     src: path.resolve(__dirname, '../src', 'plugin.template.js'),

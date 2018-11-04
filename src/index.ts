@@ -270,7 +270,6 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
     }
 
     // Write processed file.
-    console.log('Wrote: ' + targetPath)
     await pipeline.write(targetPath, function (error) {
       if (error) {
         console.error(error)
@@ -355,12 +354,16 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
       // Filter out duplicate values in the imageLoaderRegistry.
       process.$imageLoaderRegistry = [...new Set(process.$imageLoaderRegistry)]
 
-      await generateStaticImages({
-        imagePaths: process.$imageLoaderRegistry,
-        imageStyles: moduleOptions.imageStyles,
-        imagesBaseDir: moduleOptions.imagesBaseDir,
-        generateDir
-      })
+      await new Promise(resolve => setTimeout(async () => {
+        await generateStaticImages({
+          imagePaths: process.$imageLoaderRegistry,
+          imageStyles: moduleOptions.imageStyles,
+          imagesBaseDir: moduleOptions.imagesBaseDir,
+          generateDir
+        })
+        resolve()
+      }, 2000))
+
     })
   }
 }

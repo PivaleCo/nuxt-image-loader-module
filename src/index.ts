@@ -220,14 +220,14 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
   // options.imagesBaseDir allows overriding default 'content' directory.
   imagesBaseDir = imagesBaseDir ? stripTrailingLeadingSlashes(imagesBaseDir) : 'content'
 
-  for (const imagePath of imagePaths) {
+  await imagePaths.forEach(async (imagePath) => {
 
     const query = getQueryParams(imagePath)
 
     if (query.style && !Object.keys(imageStyles).includes(query.style)) {
       // Image style not defined.
       console.error(`Image style not defined on ${imagePath}`)
-      continue
+      return
     }
 
     const derivativeSuffix = query.style ? `--${query.style}` : ''
@@ -255,7 +255,7 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
     if (!isDerivative) {
       // Copy only
       fs.copyFileSync(filePath, targetPath)
-      continue
+      return
     }
 
     const pipeline = gm(path.resolve(filePath))
@@ -266,17 +266,16 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
 
     if (errors.length > 0) {
       errors.forEach(error => console.error(error))
-      continue
+      return
     }
 
-    console.log(path.resolve(filePath), targetPath)
     // Write processed file.
     await pipeline.write(targetPath, function (error) {
       if (error) {
         console.error(error)
       }
     })
-  }
+  })
 }
 
 /**

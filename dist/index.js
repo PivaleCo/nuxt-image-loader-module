@@ -180,12 +180,12 @@ const getQueryParams = function (src) {
 const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBaseDir, generateDir }) {
     // options.imagesBaseDir allows overriding default 'content' directory.
     imagesBaseDir = imagesBaseDir ? stripTrailingLeadingSlashes(imagesBaseDir) : 'content';
-    for (const imagePath of imagePaths) {
+    await imagePaths.forEach(async (imagePath) => {
         const query = getQueryParams(imagePath);
         if (query.style && !Object.keys(imageStyles).includes(query.style)) {
             // Image style not defined.
             console.error(`Image style not defined on ${imagePath}`);
-            continue;
+            return;
         }
         const derivativeSuffix = query.style ? `--${query.style}` : '';
         const isDerivative = !!derivativeSuffix;
@@ -207,7 +207,7 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
         if (!isDerivative) {
             // Copy only
             fs.copyFileSync(filePath, targetPath);
-            continue;
+            return;
         }
         const pipeline = gm(path.resolve(filePath));
         const errors = [];
@@ -215,16 +215,15 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
         pipelineApplyActions({ pipeline, style, styleName, errors });
         if (errors.length > 0) {
             errors.forEach(error => console.error(error));
-            continue;
+            return;
         }
-        console.log(path.resolve(filePath), targetPath);
         // Write processed file.
         await pipeline.write(targetPath, function (error) {
             if (error) {
                 console.error(error);
             }
         });
-    }
+    });
 };
 /**
  * Find and register any images that should be forced rendered.

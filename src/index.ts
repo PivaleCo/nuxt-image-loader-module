@@ -216,7 +216,7 @@ const getQueryParams = function (src) : { [key: string] : string } {
  *
  * Images without styles are copied without graphicsmagick alterations.
  */
-const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir, generateDir } : { imagePaths: Array<string>, imageStyles: {}, imagesBaseDir: string, generateDir: string}): void {
+const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBaseDir, generateDir } : { imagePaths: Array<string>, imageStyles: {}, imagesBaseDir: string, generateDir: string}) {
   // options.imagesBaseDir allows overriding default 'content' directory.
   imagesBaseDir = imagesBaseDir ? stripTrailingLeadingSlashes(imagesBaseDir) : 'content'
 
@@ -270,8 +270,7 @@ const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir,
     }
 
     // Write processed file.
-    console.log(`Writing file ${targetPath}`)
-    pipeline.write(targetPath, function (error) {
+    await pipeline.write(targetPath, function (error) {
       if (!error) {
         console.error(error)
       }
@@ -347,7 +346,7 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
     this.nuxt.hook('generate:done', async function(generator) {
       await addForceGeneratedImages(moduleOptions)
 
-      generateStaticImages({
+      await generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,
         imageStyles: moduleOptions.imageStyles,
         imagesBaseDir: moduleOptions.imagesBaseDir,

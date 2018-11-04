@@ -65,10 +65,6 @@ jobs:
           command: npm run test:e2e:buildStatic
 
       - run:
-          name: Allow time for static build to complete
-          command: sleep 15
-
-      - run:
           name: Serve nuxt test environment for static server (e2e tests)
           command: npm run test:e2e:serveStatic
           background: true

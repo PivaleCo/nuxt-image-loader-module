@@ -58,7 +58,7 @@ describe('Original and processing images load', function() {
 describe('Late loaded images can be force generated in nuxt module config', function() {
   it('Loads apples image after dynamically loading it 1 second after page loads', function() {
     cy.visit(`${baseUrl}/late-loaded`)
-    const imageStylesPath = baseUrl + '/image-styles/'
+    cy.wait(2000)
     assertWidthHeightPath('alt', `How do you like those apples`, 320, 180, `${imageStylesPath}apples--medium.jpg`)
   })
 })

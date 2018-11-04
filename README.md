@@ -201,3 +201,4 @@ Do [contact us](https://www.reallifedigital.com/contact) if you require Vue or N
 #### Mentions
 
 * Thanks to Silvan [@dev7ch](https://github.com/dev7ch) for feedback and real world testing of this module.
+* Thanks to Jørn A. Myrland [@jmyrland](https://github.com/jmyrland) for providing patches which led to the inclusion of the `imageHeaders` option, in particular around best practice for the Cache-Control (max-age) header.

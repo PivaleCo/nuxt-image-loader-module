@@ -349,6 +349,8 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
       // Filter out duplicate values in the imageLoaderRegistry.
       process.$imageLoaderRegistry = [...new Set(process.$imageLoaderRegistry)]
 
+      console.log(process.$imageLoaderRegistry)
+
       await generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,
         imageStyles: moduleOptions.imageStyles,

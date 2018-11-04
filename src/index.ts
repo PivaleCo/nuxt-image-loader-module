@@ -354,16 +354,12 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
       // Filter out duplicate values in the imageLoaderRegistry.
       process.$imageLoaderRegistry = [...new Set(process.$imageLoaderRegistry)]
 
-      await new Promise(resolve => setTimeout(async () => {
-        await generateStaticImages({
-          imagePaths: process.$imageLoaderRegistry,
-          imageStyles: moduleOptions.imageStyles,
-          imagesBaseDir: moduleOptions.imagesBaseDir,
-          generateDir
-        })
-        resolve()
-      }, 2000))
-
+      await generateStaticImages({
+        imagePaths: process.$imageLoaderRegistry,
+        imageStyles: moduleOptions.imageStyles,
+        imagesBaseDir: moduleOptions.imagesBaseDir,
+        generateDir
+      })
     })
   }
 }

@@ -345,6 +345,8 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
     this.nuxt.hook('generate:done', async function(generator) {
       await addForceGeneratedImages(moduleOptions)
 
+      console.log('$imageLoaderRegistry after addForceGeneratedImages()', process.$imageLoaderRegistry)
+
       generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,
         imageStyles: moduleOptions.imageStyles,

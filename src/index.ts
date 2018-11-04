@@ -226,6 +226,7 @@ const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir,
 
     if (query.style && !Object.keys(imageStyles).includes(query.style)) {
       // Image style not defined.
+      console.error(`Image style not defined on ${imagePath}`)
       continue
     }
 
@@ -269,6 +270,7 @@ const generateStaticImages = function ({ imagePaths, imageStyles, imagesBaseDir,
     }
 
     // Write processed file.
+    console.log(`Writing file ${targetPath}`)
     pipeline.write(targetPath, function (error) {
       if (!error) {
         console.error(error)
@@ -344,8 +346,6 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
     process.$imageLoaderRegistry = []
     this.nuxt.hook('generate:done', async function(generator) {
       await addForceGeneratedImages(moduleOptions)
-
-      console.log('$imageLoaderRegistry after addForceGeneratedImages()', process.$imageLoaderRegistry)
 
       generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,

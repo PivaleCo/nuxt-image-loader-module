@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:9001'
+const imageStylesPath = baseUrl + '/image-styles/'
 
 const assertWidthHeightPath = function (attr, attrValue, width, height, path) {
   cy.get(`img[${attr}="${attrValue}"]`).then(img => {
@@ -9,7 +10,6 @@ const assertWidthHeightPath = function (attr, attrValue, width, height, path) {
 }
 
 const checkAllImages = function () {
-  const imageStylesPath = baseUrl + '/image-styles/'
   assertWidthHeightPath('alt', 'Original cat', 467, 700, `${imageStylesPath}cat.jpg`)
   assertWidthHeightPath('alt', 'Small cat', 160, 90, `${imageStylesPath}cat--small.jpg`)
   assertWidthHeightPath('alt', 'Medium cat', 320, 180, `${imageStylesPath}cat--medium.jpg`)
@@ -60,5 +60,42 @@ describe('Late loaded images can be force generated in nuxt module config', func
     cy.visit(`${baseUrl}/late-loaded`)
     const imageStylesPath = baseUrl + '/image-styles/'
     assertWidthHeightPath('alt', `How do you like those apples`, 320, 180, `${imageStylesPath}apples--medium.jpg`)
+  })
+})
+
+describe('Image headers are correct', function() {
+  it('Should contain images with Cache-Control headers', function() {
+    const imageUrls = [
+      `${imageStylesPath}cat.jpg`,
+      `${imageStylesPath}cat--small.jpg`,
+      `${imageStylesPath}cat--medium.jpg`,
+      `${imageStylesPath}cat--large.jpg`,
+      `${imageStylesPath}nested/deeply/eagle.jpg`,
+      `${imageStylesPath}nested/deeply/eagle--small.jpg`,
+      `${imageStylesPath}nested/deeply/eagle--medium.jpg`,
+    ]
+    imageUrls.forEach(image => {
+      cy.request(image).then(response => {
+        expect(response.status).to.eq(200)
+        expect(response.headers).to.have.property('cache-control')
+        // The test scaffold for serving statically uses the http-server module
+        // which defaults to 3600 for the cache expiry time.
+        expect(response.headers['cache-control']).to.eq('max-age=3600')
+      })
+    })
+  })
+  it('Should return a 404 response when an image is not found', function () {
+    const invalidImageUrls = [
+      `${imageStylesPath}cat-not-here.jpg`
+    ]
+
+    invalidImageUrls.forEach(imageUrl => {
+      cy.request({
+        url: imageUrl,
+        failOnStatusCode: false
+      }).then(response => {
+        expect(response.status).to.eq(404)
+      })
+    })
   })
 })

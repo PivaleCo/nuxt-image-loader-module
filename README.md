@@ -63,6 +63,22 @@ module.exports = {
   * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues), or, even better, submit a pull request.
   * (Please note that you _can_ use macros and actions together, just bear in mind that actions are performed _after_ macros.)
 * `forceGenerateImages` - This is an object to force process image style derivatives in generate mode. See details further down in this readme.
+* `imageHeaders` - Set an object of headers to send for image responses. This defaults to:
+  * The module automatically assigns the correct mimetype
+  * Max age as per [Lighthouse Recommendations](https://developers.google.com/web/tools/lighthouse/audits/cache-policy)
+  ```
+    {
+      'Content-Type': 'image/{mimetype}',
+      'Cache-Control': 'max-age=86400'
+    }
+  ```
+
+  You can override just the Cache-Control header by providing the following as as the `imageHeaders` option.
+  ```
+  {
+    'Cache-Control': 'max-age=3600'
+  }
+  ```
 
 ## Calling a processed image with query strings
 

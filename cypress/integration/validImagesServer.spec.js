@@ -53,3 +53,37 @@ describe('Original and processing images load', function() {
     checkAllImages()
   })
 })
+
+describe('Image headers are correct', function() {
+  it('Should contain images with Cache-Control headers', function() {
+    const imageUrls = [
+      `${baseUrl}/cat.jpg`,
+      `${baseUrl}/cat.jpg?style=small`,
+      `${baseUrl}/cat.jpg?style=medium`,
+      `${baseUrl}/cat.jpg?style=large`,
+    ]
+    const requests = imageUrls.forEach(image => {
+      cy.request(image).then(response => {
+        expect(response.status).to.eq(200)
+        expect(response.headers).to.have.property('cache-control')
+        // The nuxt test instance passes 'Cache-Control': 'max-age=7200' in the
+        // imagesHeaders options.
+        expect(response.headers['cache-control']).to.eq('max-age=7200')
+      })
+    })
+  })
+  it('Should return a 404 response when an image is not found', function () {
+    const invalidImageUrls = [
+      `${baseUrl}/cat-not-here.jpg`,
+    ]
+
+    invalidImageUrls.forEach(imageUrl => {
+      cy.request({
+        url: imageUrl,
+        failOnStatusCode: false
+      }).then(response => {
+        expect(response.status).to.eq(404)
+      })
+    })
+  })
+})

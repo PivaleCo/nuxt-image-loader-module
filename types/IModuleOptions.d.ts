@@ -1,15 +1,17 @@
+import { OutgoingHttpHeaders } from 'http';
 
-interface IImageStyles {
+export interface IImageStyles {
   macros?: Array<string>,
   actions?: Array<string>
 }
 
-interface IForceGenerateImages {
+export interface IForceGenerateImages {
   [key: string] : String
 }
 
-interface IModuleOptions {
+export interface IModuleOptions {
   imagesBaseDir: string,
   imageStyles?: IImageStyles,
-  forceGenerateImages?: IForceGenerateImages
+  forceGenerateImages?: IForceGenerateImages,
+  imageHeaders?: OutgoingHttpHeaders
 }

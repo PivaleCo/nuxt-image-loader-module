@@ -24,6 +24,9 @@ module.exports = {
       },
       forceGenerateImages: {
         medium: '**/*'
+      },
+      imageHeaders: {
+        'Cache-Control': 'max-age=7200'
       }
     }]
   ]

@@ -1,9 +1,12 @@
+import { IModuleOptions, IImageStyles } from '../types/IModuleOptions';
+import { IFileTypeMetadata } from '../types/IFileTypeMetadata';
+
 import * as path from 'path'
 import * as fs from 'fs'
 import * as glob from 'glob'
 import * as mkdirp from 'mkdirp'
 import * as gm from 'gm'
-import { ServerResponse, IncomingMessage } from 'http'
+import { ServerResponse, IncomingMessage, OutgoingHttpHeaders } from 'http'
 import * as Url from 'url'
 
 import macros from './macros'
@@ -78,9 +81,20 @@ const respondWithError = (res: ServerResponse, error: Error): void => {
   res.end(error.message)
 }
 
-const respondWithFile = (res: ServerResponse, imagePath: string, mimeType: string): void => {
+const respondWithFile = (res: ServerResponse, imagePath: string, mimeType: string, additionalHeaders: OutgoingHttpHeaders): void => {
   const fileContent = fs.readFileSync(imagePath)
-  res.writeHead(200, { 'Content-Type': mimeType });
+  const headers: OutgoingHttpHeaders = {
+    'Content-Type': mimeType,
+    // 1 day (60 seconds * 60 minutes * 24 hours)
+    'Cache-Control': 'max-age=86400'
+  }
+
+  // Allow user header overrides.
+  Object.keys(additionalHeaders).forEach(header => {
+    headers[header] = additionalHeaders[header]
+  })
+
+  res.writeHead(200, headers);
   res.end(fileContent)
 }
 
@@ -99,6 +113,8 @@ const imageLoaderFactory = (options: IModuleOptions) => function (req: IncomingM
   const queryString = Url.parse(req.url).query
   const url = req.url.replace(Url.parse(req.url).search, '')
   const requestExtension = path.extname(url)
+
+  const imageHeaders = options.imageHeaders || {}
 
   const metadata = fileTypeMetadata()
 
@@ -142,7 +158,7 @@ const imageLoaderFactory = (options: IModuleOptions) => function (req: IncomingM
 
       if (fs.existsSync(targetPath)) {
         // Respond with existing (already processed) file.
-        return respondWithFile(res, targetPath, mimeType)
+        return respondWithFile(res, targetPath, mimeType, imageHeaders)
       }
 
       const styleName = query.style
@@ -168,14 +184,14 @@ const imageLoaderFactory = (options: IModuleOptions) => function (req: IncomingM
       // Respond with new processed file.
       return pipeline.write(targetPath, function (error) {
         if (!error) {
-          return respondWithFile(res, targetPath, mimeType)
+          return respondWithFile(res, targetPath, mimeType, imageHeaders)
         }
         return respondWithError(res, error)
       });
     }
 
     // Respond with source file.
-    return respondWithFile(res, filePath, mimeType)
+    return respondWithFile(res, filePath, mimeType, imageHeaders)
   }
 
   // Fall through to nuxt's own 404 page.

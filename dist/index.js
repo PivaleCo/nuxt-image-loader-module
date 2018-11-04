@@ -69,9 +69,18 @@ const respondWithError = (res, error) => {
     res.writeHead(500);
     res.end(error.message);
 };
-const respondWithFile = (res, imagePath, mimeType) => {
+const respondWithFile = (res, imagePath, mimeType, additionalHeaders) => {
     const fileContent = fs.readFileSync(imagePath);
-    res.writeHead(200, { 'Content-Type': mimeType });
+    const headers = {
+        'Content-Type': mimeType,
+        // 1 day (60 seconds * 60 minutes * 24 hours)
+        'Cache-Control': 'max-age=86400'
+    };
+    // Allow user header overrides.
+    Object.keys(additionalHeaders).forEach(header => {
+        headers[header] = additionalHeaders[header];
+    });
+    res.writeHead(200, headers);
     res.end(fileContent);
 };
 const fileTypeMetadata = function () {
@@ -88,6 +97,7 @@ const imageLoaderFactory = (options) => function (req, res, next) {
     const queryString = Url.parse(req.url).query;
     const url = req.url.replace(Url.parse(req.url).search, '');
     const requestExtension = path.extname(url);
+    const imageHeaders = options.imageHeaders || {};
     const metadata = fileTypeMetadata();
     if (!Object.keys(metadata).includes(requestExtension)) {
         return next();
@@ -119,7 +129,7 @@ const imageLoaderFactory = (options) => function (req, res, next) {
             const targetPath = path.join(styleDir, targetFile);
             if (fs.existsSync(targetPath)) {
                 // Respond with existing (already processed) file.
-                return respondWithFile(res, targetPath, mimeType);
+                return respondWithFile(res, targetPath, mimeType, imageHeaders);
             }
             const styleName = query.style;
             const style = imageStyles[styleName];
@@ -139,13 +149,13 @@ const imageLoaderFactory = (options) => function (req, res, next) {
             // Respond with new processed file.
             return pipeline.write(targetPath, function (error) {
                 if (!error) {
-                    return respondWithFile(res, targetPath, mimeType);
+                    return respondWithFile(res, targetPath, mimeType, imageHeaders);
                 }
                 return respondWithError(res, error);
             });
         }
         // Respond with source file.
-        return respondWithFile(res, filePath, mimeType);
+        return respondWithFile(res, filePath, mimeType, imageHeaders);
     }
     // Fall through to nuxt's own 404 page.
     next();

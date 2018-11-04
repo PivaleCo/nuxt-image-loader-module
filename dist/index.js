@@ -234,7 +234,7 @@ const addForceGeneratedImages = async function (moduleOptions) {
     const forceGenerateConfig = moduleOptions.forceGenerateImages;
     const baseDir = moduleOptions.imagesBaseDir;
     if (typeof forceGenerateConfig === 'object') {
-        Object.keys(forceGenerateConfig).forEach(style => {
+        Object.keys(forceGenerateConfig).forEach(async (style) => {
             if (!moduleOptions.imageStyles[style]) {
                 // forceGenerateImages key doesn't match an imageStyles key.
                 console.error(`forceGenerateImages key ${style} doesn't match an imageStyles key`);
@@ -244,7 +244,7 @@ const addForceGeneratedImages = async function (moduleOptions) {
             const imageFileTypes = Object.keys(fileTypeMetadata());
             // List all images matching the specified glob pattern inside the base
             // directory. Filter any non-image types after glob pattern is applied.
-            const images = glob.sync(`./${baseDir}/${globPattern}`, {
+            const images = await glob.sync(`./${baseDir}/${globPattern}`, {
                 nodir: true
             }).filter(f => imageFileTypes.includes(path.extname(f).toLowerCase()));
             if (images.length === 0) {

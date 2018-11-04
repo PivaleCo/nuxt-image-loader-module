@@ -209,7 +209,7 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
             fs.copyFileSync(filePath, targetPath);
             continue;
         }
-        const pipeline = gm(filePath);
+        const pipeline = gm(path.resolve(filePath));
         const errors = [];
         pipelineApplyMacros({ style, styleName, errors });
         pipelineApplyActions({ pipeline, style, styleName, errors });
@@ -217,9 +217,10 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
             errors.forEach(error => console.error(error));
             continue;
         }
+        console.log(path.resolve(filePath), targetPath);
         // Write processed file.
         await pipeline.write(targetPath, function (error) {
-            if (!error) {
+            if (error) {
                 console.error(error);
             }
         });

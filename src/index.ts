@@ -258,7 +258,7 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
       continue
     }
 
-    const pipeline = gm(filePath)
+    const pipeline = gm(path.resolve(filePath))
 
     const errors = []
     pipelineApplyMacros({ style, styleName, errors })
@@ -269,12 +269,13 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
       continue
     }
 
+    console.log(path.resolve(filePath), targetPath)
     // Write processed file.
     await pipeline.write(targetPath, function (error) {
-      if (!error) {
+      if (error) {
         console.error(error)
       }
-    });
+    })
   }
 }
 

@@ -270,6 +270,7 @@ const generateStaticImages = async function ({ imagePaths, imageStyles, imagesBa
     }
 
     // Write processed file.
+    console.log('Wrote: ' + targetPath)
     await pipeline.write(targetPath, function (error) {
       if (error) {
         console.error(error)
@@ -343,13 +344,16 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
   if (buildType === 'generate') {
     const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []
-    this.nuxt.hook('generate:done', async function(generator) {
+    this.nuxt.hook('generate:done', async function(nuxt, errors) {
+
+      if (errors.toString()) {
+        console.error(errors.toString())
+      }
+
       await addForceGeneratedImages(moduleOptions)
 
       // Filter out duplicate values in the imageLoaderRegistry.
       process.$imageLoaderRegistry = [...new Set(process.$imageLoaderRegistry)]
-
-      console.log(process.$imageLoaderRegistry)
 
       await generateStaticImages({
         imagePaths: process.$imageLoaderRegistry,

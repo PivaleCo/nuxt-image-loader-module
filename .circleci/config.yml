@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # Main container image
-      - image: cypress/base:8
+      - image: cypress/base:10
         environment:
           ## this enables colors in the output
           TERM: xterm

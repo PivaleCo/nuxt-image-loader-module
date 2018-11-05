@@ -175,7 +175,7 @@ Please refer to the full list of [glob syntax options](https://github.com/isaacs
 
 1. Your source images should be the largest and unaltered versions you have available - or at least the maximum size you expect to use in your application.
 
-2. You can organize your images files in further sub-directories if you wish. This will also be reflected in the image URL. For example, if you place a file in `<YOUR-APP-ROOT>/content/articles/news/test.png` then then `<img>` tag `src` attribute should be `/content/articles/news/test.png?style=small` or whatever style you want to apply.
+2. You can organize your images files in further sub-directories if you wish. This will also be reflected in the image URL. For example, if you place a file in `<YOUR-APP-ROOT>/content/articles/news/test.png` then then `<img>` tag `src` attribute should be `/articles/news/test.png?style=small` or whatever style you want to apply.
 
 3. You may wish to put the following into your `.gitignore` file so that the processed images are not committed into your version controlled files:
 

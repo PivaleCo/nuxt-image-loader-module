@@ -274,8 +274,11 @@ async function generateStaticImages ({ imagePaths, imageStyles, imagesBaseDir, g
         console.error(error)
       }
     })
-    console.log(targetPath)
-    await new Promise(resolve => setTimeout(resolve, 500))
+    // A forced await is required due to some (yet) unexplained reason where gm
+    // may not generate files in some instances. This may become a problem for a
+    // large number of files to process, although as this is only run at build
+    // time, it's currently a sufficient workaround.
+    await new Promise(resolve => setTimeout(resolve, 100))
   }
 }
 

@@ -278,7 +278,7 @@ async function generateStaticImages ({ imagePaths, imageStyles, imagesBaseDir, g
     // may not generate files in some instances. This may become a problem for a
     // large number of files to process, although as this is only run at build
     // time, it's currently a sufficient workaround.
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise(resolve => setTimeout(resolve, 250))
   }
 }
 

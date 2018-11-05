@@ -223,6 +223,8 @@ async function generateStaticImages({ imagePaths, imageStyles, imagesBaseDir, ge
                 console.error(error);
             }
         });
+        console.log(targetPath);
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 }
 /**

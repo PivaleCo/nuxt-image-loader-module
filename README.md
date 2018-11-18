@@ -184,10 +184,10 @@ Here's an example of how you can then use 'thumb' in your `<nuxt-img />` compone
 <nuxt-img src="/my-image.jpg" responsive-style="thumb" alt="Never forget alt tags!" />
 ```
 
-This will lookup transform to the following when in HMR/SSR/Server mode:
+This will transform to the following HTML when in HMR/SSR/Server mode:
 
 ```html
-<!-- Line breaks inserted for readbility -->
+<!-- Line breaks inserted for readability -->
 <img
   src="/my-image.jpg"
   alt="Never forget alt tags!"
@@ -198,10 +198,10 @@ This will lookup transform to the following when in HMR/SSR/Server mode:
   sizes="(min-width: 1280px) 100vw, 50vw" />
 ```
 
-This will lookup transform to the following when in static generate mode:
+This will transform to the following HTML when in static generate mode:
 
 ```html
-<!-- Line breaks inserted for readbility -->
+<!-- Line breaks inserted for readability -->
 <img
   src="../../image-styles/my-image.jpg"
   alt="Never forget alt tags!"

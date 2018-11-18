@@ -22,6 +22,12 @@ module.exports = {
         medium: { macros: ['scaleAndCrop|320|180'] },
         large: { macros: ['scaleAndCrop|640|360'] },
       },
+      responsiveStyles: {
+        thumb: {
+          srcset: 'small 160w, medium 320w, large 640w',
+          sizes: '(min-width: 1280px) 100vw, 50vw',
+        },
+      },
       forceGenerateImages: {
         medium: '**/*'
       },

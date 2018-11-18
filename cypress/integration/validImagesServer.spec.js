@@ -72,6 +72,7 @@ describe('Image headers are correct', function() {
       })
     })
   })
+
   it('Should return a 404 response when an image is not found', function () {
     const invalidImageUrls = [
       `${baseUrl}/cat-not-here.jpg`,
@@ -84,6 +85,16 @@ describe('Image headers are correct', function() {
       }).then(response => {
         expect(response.status).to.eq(404)
       })
+    })
+  })
+})
+
+describe('Responsive images load as expected', function() {
+  it("Loads the chickens image in 3 different image style sizes based on the 'thumb' responsiveStyle definition", function () {
+    cy.visit(`${baseUrl}/responsive-images`)
+    cy.get(`img[alt="Chickens"]`).then(img => {
+      expect(img[0].srcset).to.eq('/chickens.jpg?style=small 160w, /chickens.jpg?style=medium 320w, /chickens.jpg?style=large 640w')
+      expect(img[0].sizes).to.eq('(min-width: 1280px) 100vw, 50vw')
     })
   })
 })

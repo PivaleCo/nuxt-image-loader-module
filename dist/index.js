@@ -272,12 +272,16 @@ const addForceGeneratedImages = async function (moduleOptions) {
 module.exports = function imageLoader(moduleOptions) {
     const imageLoaderHandler = imageLoaderFactory(moduleOptions);
     const validImageStyles = moduleOptions.imageStyles && typeof moduleOptions.imageStyles === 'object' ? Object.keys(moduleOptions.imageStyles) : [];
+    const validResponsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? Object.keys(moduleOptions.responsiveStyles) : [];
+    const responsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? moduleOptions.responsiveStyles : {};
     const buildType = process.env.npm_lifecycle_event;
     this.addServerMiddleware({ path: '', handler: imageLoaderHandler });
     this.addPlugin({
         src: path.resolve(__dirname, '../src', 'plugin.template.js'),
         options: {
-            validImageStyles
+            validImageStyles,
+            validResponsiveStyles,
+            responsiveStyles
         }
     });
     if (buildType === 'generate') {

@@ -5,13 +5,21 @@ export interface IImageStyles {
   actions?: Array<string>
 }
 
+export interface IResponsiveStyles {
+  [responsiveStyle: string]: {
+    srcset: string,
+    sizes?: string
+  }
+}
+
 export interface IForceGenerateImages {
-  [key: string] : String
+  [key: string] : string
 }
 
 export interface IModuleOptions {
   imagesBaseDir: string,
   imageStyles?: IImageStyles,
+  responsiveStyles? : IResponsiveStyles,
   forceGenerateImages?: IForceGenerateImages,
   imageHeaders?: OutgoingHttpHeaders
 }

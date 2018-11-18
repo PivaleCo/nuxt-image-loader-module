@@ -333,6 +333,8 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
   const imageLoaderHandler = imageLoaderFactory(moduleOptions)
 
   const validImageStyles = moduleOptions.imageStyles && typeof moduleOptions.imageStyles === 'object' ? Object.keys(moduleOptions.imageStyles) : []
+  const validResponsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? Object.keys(moduleOptions.responsiveStyles) : []
+  const responsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? moduleOptions.responsiveStyles : {}
 
   const buildType = process.env.npm_lifecycle_event
 
@@ -340,7 +342,9 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
   this.addPlugin({
     src: path.resolve(__dirname, '../src', 'plugin.template.js'),
     options: {
-      validImageStyles
+      validImageStyles,
+      validResponsiveStyles,
+      responsiveStyles
     }
   })
 

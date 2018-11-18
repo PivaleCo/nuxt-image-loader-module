@@ -47,6 +47,13 @@ module.exports = {
         medium: { macros: ['scaleAndCrop|320|180'] },
         large: { macros: ['scaleAndCrop|640|360'] },
       },
+      // Optional responsive style profiles:
+      responsiveStyles: {
+        thumb: {
+          srcset: 'small 160w, medium 320w, large 640w',
+          sizes: '(min-width: 1280px) 100vw, 50vw',
+        },
+      },
     }]
   ],
 
@@ -62,6 +69,11 @@ module.exports = {
   * `actions` - An array of image actions to perform. For example, referring to the [Graphicsmagick documentation](http://aheckmann.github.io/gm/docs.html) you'll find several actions which can be performed. You notice for the example `nuxt.config.js` example above that each action is defined with the processing method name first followed by a (`|`) pipe separator. If the processing method has arguments (such as height and width) then these are appended to the action delimited by further pipe separators.
   * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues), or, even better, submit a pull request.
   * (Please note that you _can_ use macros and actions together, just bear in mind that actions are performed _after_ macros.)
+* `responsiveStyles` - This is an object to define responsive styles must reference imageStyles.
+The object's keys are the names of responsive style you want use in the `responsive-style` prop on the
+`<nuxt-img>` component. The value of each item is:
+  * `srcset` - This is similar to an [HTML5 `srcset`](http://w3c.github.io/html/semantics-embedded-content.html#element-attrdef-img-srcset) attribute value that you'd typically set on  a standard `<img>` tag. Instead of referencing a static path to each image, use the name of any imageStyle definition you've created. This will automatically discover the correct image URL to load whether you're in static generate mode (i.e. `nuxt generate`), hot-module-reload (i.e. `nuxt dev`) or SPA/node server mode (i.e. `nuxt start`).
+  * `sizes` - This is exactly the same as what you'd expect to write for the standard [`sizes` attribute](http://w3c.github.io/html/semantics-embedded-content.html#element-attrdef-img-sizes). See the example given above.
 * `forceGenerateImages` - This is an object to force process image style derivatives in generate mode. See details further down in this readme.
 * `imageHeaders` - Set an object of headers to send for image responses. This defaults to:
   * The module automatically assigns the correct mimetype
@@ -130,6 +142,78 @@ export default {
 }
 </script>
 ```
+
+## Responsive images
+
+You can define 'responsive image styles' to use in the module configuration. Here is an example for a 'thumb' preset:
+
+```javascript
+{
+
+  //...
+
+  imageStyles: {
+    small: { macros: ['scaleAndCrop|160|90'] },
+    medium: { macros: ['scaleAndCrop|320|180'] },
+    large: { macros: ['scaleAndCrop|640|360'] },
+  },
+
+  responsiveStyles: {
+    thumb: {
+      srcset: 'small 160w, medium 320w, large 640w',
+      sizes: '(min-width: 1280px) 100vw, 50vw',
+    },
+  },
+
+  //...
+
+}
+```
+
+In this example, 'thumb' is the name of the responsive style.
+
+The `srcset` property is made of comma-separated definitions which closely follow the same standards as the HTML image tag specification. The difference here is that instead of referencing static image URLs as the first item of each component, you should use an existing image style definition.
+
+In this example there are three definitions for small, medium and large. Because the browser needs to know the widths of the images *before* they are fetched you'll notice that the `160w`, `320w` and `640w` definitions all correspond to their matching image style definition widths. You can use pixel density scaling values instead, such as `1x`, `2x` etc.
+
+The optional `sizes` property is exactly what will be in the final HTML output as per the HTML specification for the `sizes` image attribute. These are media query style hints to the browser and you may need to trial-and-error with this to get it to work in your particular use case. You may find that you don't need it at all and instead prefer to provide CSS to perform any further size styling.
+
+Here's an example of how you can then use 'thumb' in your `<nuxt-img />` component:
+
+```html
+<nuxt-img src="/my-image.jpg" responsive-style="thumb" alt="Never forget alt tags!" />
+```
+
+This will lookup transform to the following when in HMR/SSR/Server mode:
+
+```html
+<!-- Line breaks inserted for readbility -->
+<img
+  src="/my-image.jpg"
+  alt="Never forget alt tags!"
+  srcset="
+    /my-image.jpg?style=small 160w,
+    /my-image.jpg?style=medium 320w,
+    /my-image.jpg?style=large 640w"
+  sizes="(min-width: 1280px) 100vw, 50vw" />
+```
+
+This will lookup transform to the following when in static generate mode:
+
+```html
+<!-- Line breaks inserted for readbility -->
+<img
+  src="../../image-styles/my-image.jpg"
+  alt="Never forget alt tags!"
+  srcset="
+    ../../image-styles/my-image--small.jpg 160w,
+    ../../image-styles/my-image--medium.jpg 320w,
+    ../../image-styles/my-image--large.jpg 640w"
+  sizes="(min-width: 1280px) 100vw, 50vw" />
+```
+
+
+> **Final note on responsive images:** It's known that this `srcset` approach to implementing responsive images is generally easier to set up and works really well if all you want to do is improve load times on smaller devices. You may find there are limitations where art direction is concerned, e.g. when you want to swap out a landscape image for a square or portrait image as the viewport changes width. You may be able to solve this by setting appropriate image styles to match your requirements at each breakpoint and using the `sizes` attribute, although it's not been tested by the maintainer. One alternative method is to implement a `<picture>` tag which may be better for you use case. This is not currently available as part of this module. If there's enough interest in getting the picture tag supported in the issue queue then this may be added as a future feature.
 
 ## Do you need to lazy load images when running nuxt generate?
 
@@ -202,3 +286,4 @@ Do [contact us](https://www.reallifedigital.com/contact) if you require Vue or N
 
 * Thanks to Silvan [@dev7ch](https://github.com/dev7ch) for feedback and real world testing of this module.
 * Thanks to Jørn A. Myrland [@jmyrland](https://github.com/jmyrland) for providing patches which led to the inclusion of the `imageHeaders` option, in particular around best practice for the Cache-Control (max-age) header.
+* Thanks to Domantas Petrauskas [@FistMeNaruto](https://github.com/FistMeNaruto) for suggesting responsive image support.

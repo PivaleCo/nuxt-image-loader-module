@@ -98,3 +98,13 @@ describe('Image headers are correct', function() {
     })
   })
 })
+
+describe('Responsive images load as expected', function() {
+  it("Loads the chickens image in 3 different image style sizes based on the 'thumb' responsiveStyle definition", function () {
+    cy.visit(`${baseUrl}/responsive-images`)
+    cy.get(`img[alt="Chickens"]`).then(img => {
+      expect(img[0].srcset).to.eq('../../image-styles/chickens--small.jpg 160w, ../../image-styles/chickens--medium.jpg 320w, ../../image-styles/chickens--large.jpg 640w')
+      expect(img[0].sizes).to.eq('(min-width: 1280px) 100vw, 50vw')
+    })
+  })
+})

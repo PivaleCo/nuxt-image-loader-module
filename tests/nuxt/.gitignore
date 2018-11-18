@@ -27,5 +27,5 @@ static/sw.js
 static/workbox-sw*.js
 
 # Test generated files
-package-json.lock
+!package-lock.json
 static/image-styles

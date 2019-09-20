@@ -1,3 +1,4 @@
+
 {
     "compilerOptions": {
         "target": "es2018",
@@ -10,10 +11,6 @@
     "compileOnSave": true,
     "include": [
         "./src/**/*.ts",
-        "./types/**/*.d.ts",
-        "./node_modules/@types"
-    ],
-    "typeRoots": [
-        "./node_modules/@types"
+        "./types/**/*.d.ts"
     ]
 }

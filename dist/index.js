@@ -180,6 +180,7 @@ const getQueryParams = function (src) {
 async function generateStaticImages({ imagePaths, imageStyles, imagesBaseDir, generateDir }) {
     // options.imagesBaseDir allows overriding default 'content' directory.
     imagesBaseDir = imagesBaseDir ? stripTrailingLeadingSlashes(imagesBaseDir) : 'content';
+    const filesNotFound = [];
     for (const imagePath of imagePaths) {
         const query = getQueryParams(imagePath);
         if (query.style && !Object.keys(imageStyles).includes(query.style)) {
@@ -192,6 +193,13 @@ async function generateStaticImages({ imagePaths, imageStyles, imagesBaseDir, ge
         const imagePathNoQuery = imagePath.split('?')[0];
         // Lookup image file in the base images directory.
         const filePath = `./${imagesBaseDir}${imagePathNoQuery}`;
+        if (!fs.existsSync(filePath)) {
+            if (!filesNotFound.includes(filePath)) {
+                filesNotFound.push(filePath);
+                console.warn(`Warning: Source file not found at ${filePath}. Perhaps you referenced this image somewhere and it has since been removed.`);
+            }
+            continue;
+        }
         const requestExtension = path.extname(imagePathNoQuery);
         const subDir = path.dirname(imagePathNoQuery);
         const styleDir = path.join(generateDir, 'image-styles', subDir);

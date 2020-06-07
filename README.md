@@ -276,11 +276,11 @@ I'd love to hear how you're using this nuxt module and whether anything is missi
 
 ### Credits
 
-Development is sponsored by [Real Life Digital](https://www.reallifedigital.com)
+Development is sponsored by [Pivale](https://www.pivale.co)
 
-<img src="https://www.reallifedigital.com/themes/custom/reallifetheme/logo.svg" alt="Real Life Digital Logo" width="100px" height="100px">
+<img src="https://www.pivale.co/images/external/social-logo.png" alt="Pivale Logo" width="100px" height="100px">
 
-Do [contact us](https://www.reallifedigital.com/contact) if you require Vue or Nuxt development. We also build solutions with Drupal.
+Please [contact us](https://www.pivale.co/contact) if you require Node, Vue or Nuxt development. We also build solutions with Drupal.
 
 #### Mentions
 

@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   /*
   ** Build configuration
@@ -15,7 +17,7 @@ module.exports = {
   ** Modules
   */
   modules: [
-    ['../../index.js', {
+    [path.resolve('../../index.js'), {
       imagesBaseDir: 'content',
       imageStyles: {
         small: { macros: ['scaleAndCrop|160|90'] },

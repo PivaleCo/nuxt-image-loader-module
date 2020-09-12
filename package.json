@@ -1,6 +1,6 @@
 {
   "name": "@pivale/nuxt-image-loader-module",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "An image loader module for nuxt.js that allows you to configure image style derivatives.",
   "main": "index.js",
   "files": [

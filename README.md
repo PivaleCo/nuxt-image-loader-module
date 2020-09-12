@@ -1,7 +1,7 @@
 
-![Nuxt Image Loader logo and example](https://github.com/reallifedigital/nuxt-image-loader-module/raw/master/docs/intro-graphic.jpg)
+![Nuxt Image Loader logo and example](https://github.com/PivaleCo/nuxt-image-loader-module/raw/master/docs/intro-graphic.jpg)
 
-[![CircleCI](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/reallifedigital/nuxt-image-loader-module/tree/master)
+[![CircleCI](https://circleci.com/gh/PivaleCo/nuxt-image-loader-module/tree/master.svg?style=svg)](https://circleci.com/gh/PivaleCo/nuxt-image-loader-module/tree/master)
 
 # Nuxt Image Loader Module
 
@@ -26,7 +26,7 @@ Works for all of nuxt deployment modes:
 2. Install this module as a dependency in your project:
 
 ```shell
-npm install @reallifedigital/nuxt-image-loader-module
+npm install @pivale/nuxt-image-loader-module
 ```
 
 ## Setup
@@ -39,7 +39,7 @@ module.exports = {
   // ...
 
   modules: [
-    ['@reallifedigital/nuxt-image-loader-module', {
+    ['@pivale/nuxt-image-loader-module', {
       imagesBaseDir: 'content',
       imageStyles: {
         thumbnail: { actions: ['gravity|Center', 'resize|320|180^', 'extent|320|180|+0|+90'] },
@@ -67,7 +67,7 @@ module.exports = {
 * `imagesBaseDir` - This module will search a sub-directory in your nuxt application for images. By default, this is set to a sub-directory named 'content', but you can change this to the needs of your application
 * `imageStyles` - This is an object containing the image processing settings where the key is the name of the image style you want to use in the image URL (see below). The value of each image style definition should contain at least one of the following key/values:
   * `actions` - An array of image actions to perform. For example, referring to the [Graphicsmagick documentation](http://aheckmann.github.io/gm/docs.html) you'll find several actions which can be performed. You notice for the example `nuxt.config.js` example above that each action is defined with the processing method name first followed by a (`|`) pipe separator. If the processing method has arguments (such as height and width) then these are appended to the action delimited by further pipe separators.
-  * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues), or, even better, submit a pull request.
+  * `macros` - This module currently only has one macro defined called `scaleAndCrop`. This does some heavy lifting to chain multiple actions together into an easy-to-read requirement. We'll add to this list of macros as we find further uses for common sets of actions. If you'd like to suggest others, please [open an issue](https://github.com/PivaleCo/nuxt-image-loader-module/issues), or, even better, submit a pull request.
   * (Please note that you _can_ use macros and actions together, just bear in mind that actions are performed _after_ macros.)
 * `responsiveStyles` - This is an object to define responsive styles must reference imageStyles.
 The object's keys are the names of responsive style you want use in the `responsive-style` prop on the
@@ -228,7 +228,7 @@ module.exports = {
   // ...
 
   modules: [
-    ['@reallifedigital/nuxt-image-loader-module', {
+    ['@pivale/nuxt-image-loader-module', {
       imagesBaseDir: 'content',
       imageStyles: {
         medium: { macros: ['scaleAndCrop|320|180'] },
@@ -272,7 +272,7 @@ static/image-styles
 
 ### Contribution
 
-I'd love to hear how you're using this nuxt module and whether anything is missing that would benefit from enhancements. If so, please [open an issue](https://github.com/reallifedigital/nuxt-image-loader-module/issues) on Github.
+I'd love to hear how you're using this nuxt module and whether anything is missing that would benefit from enhancements. If so, please [open an issue](https://github.com/PivaleCo/nuxt-image-loader-module/issues) on Github.
 
 ### Credits
 

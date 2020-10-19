@@ -346,7 +346,6 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
   const validResponsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? Object.keys(moduleOptions.responsiveStyles) : []
   const responsiveStyles = moduleOptions.responsiveStyles && typeof moduleOptions.responsiveStyles === 'object' ? moduleOptions.responsiveStyles : {}
 
-  const buildType = process.env.npm_lifecycle_event
 
   this.addServerMiddleware({ path: '', handler: imageLoaderHandler })
   this.addPlugin({
@@ -358,7 +357,7 @@ module.exports = function imageLoader (moduleOptions: IModuleOptions) {
     }
   })
 
-  if (buildType === 'generate') {
+  if (this.options.target === 'static') {
     const generateDir = this.nuxt.options.generate.dir
     process.$imageLoaderRegistry = []
     this.nuxt.hook('generate:done', async function(nuxt, errors) {

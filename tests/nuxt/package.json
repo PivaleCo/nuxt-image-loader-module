@@ -5,7 +5,7 @@
   "author": "Barry Fisher <barry.fisher@reallifedigital.com>",
   "private": true,
   "dependencies": {
-    "nuxt": "^2.12.2"
+    "nuxt": "^2.15.8"
   },
   "config": {
     "nuxt": {
